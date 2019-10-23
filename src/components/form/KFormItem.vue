@@ -1,6 +1,6 @@
 <template>
-    <div class="k-form-item" :class="(label=='submit'?'cen-val':'lf-val')">
-        <label class="k-form-label" v-if="(label&&label!='submit')">{{label}} </label>
+    <div class="k-form-item lf-val">
+        <label class="k-form-label" v-if="prop">{{label}} </label>
         <slot></slot>
         <!-- 校验错误信息 -->
         <p class="error">{{errorMessage}}</p>
@@ -12,42 +12,42 @@ export default {
         label:{
             type:String
         },
-        error:{
-            type:String
-        },
         prop:{
             type:String
+        }
+    },
+     //provide 返回对象可以跨层级传参给子孙
+    provide(){
+        return{
+            prop:this.prop//表单的实例传给后代
         }
     },
     inject: ['form'],
     data(){
         return{
-            errorMessage:this.error,
+            errorMessage:'',
             cenVal:false,
             num:0
         }
     },
     created(){
-        console.log(this.prop,'我已经进入了');
+        var that = this;
         if(this.prop){
             this.form.$on('validate',this.validate);
         }
-        
     },
     methods:{
         validate(){
-            var that = this;
             //数据模型
             let dataModel = this.form.model;
             //数据规则
             let rulesModel = this.form.rules;
-            for(var objName in rulesModel){
-                if(objName==that.prop&&rulesModel[objName][0].required){
-                    if(dataModel[objName]){
-                        console.log(9);
-                        return false;
-                    }
-                    this.errorMessage = rulesModel[objName][0].message;
+            
+            if(this.prop&&rulesModel[this.prop][0].required){
+                if(!dataModel[this.prop]){
+                    this.errorMessage = rulesModel[this.prop][0].message;
+                }else{
+                    this.errorMessage = '';
                 }
             }
         }
@@ -63,7 +63,7 @@ export default {
         font-weight:500;
         margin-right: 20px;
         box-sizing: border-box;
-        width:100px;
+        width:60px;
         max-width: 250px;
         text-align: right;
     }

@@ -1,5 +1,5 @@
 <template>
-    <input :type="type" v-model="inputVal" v-on:input="inputFunc" class="input-k"/>
+    <input :type="type"  @input="onInput" ref="kinput" :value="valInput" class="input-k"/>
 </template>
 <script>
 export default {
@@ -15,16 +15,16 @@ export default {
     },
     data(){
         return{
-            inputVal:this.value
+            valInput:this.value
         }
     },
-    inject: ['form'],
-    methods: {
-        inputFunc(e){
-            console.log(this.form);
-            this.$emit('changeInput',{inputVal:this.inputVal});
+    inject: ['prop','form'],
+    methods:{
+        onInput(e){
+            // this.$emit('onInput',{objName:this.prop,objVal:e.target.value});
+            this.form.model[this.prop] = e.target.value;
         }
-    },
+    }
 }
 </script>
 <style>
@@ -40,6 +40,7 @@ export default {
     }
     input[type='button']{
         padding-left: 0px;
-        margin-left: 108px;
+        margin-left: 98px;
+        margin-top: 20px;
     }
 </style>

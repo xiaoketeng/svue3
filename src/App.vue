@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <router-link to="/">1</router-link>| <router-link to="/about">2</router-link>
     <h5 >商品列表</h5>
    <table border='0' cellpadding='0' cellspacing='0'>
         <thead>
@@ -34,11 +35,13 @@
      <div class="k-form-center">
       <KForm ref="loginForm"  :model="model" :rules="rules">
         <KFormItem label="用户名" prop="username">
-          <KFormInput type="text"  :value="model.username" error=''></KFormInput>
+          <!-- <KFormInput type="text" :value="model.username"  @onInput="onInput"></KFormInput> -->
+           <KFormInput type="text" :value="model.username" ></KFormInput>
         </KFormItem>
 
         <KFormItem label="密码" prop="password">
-          <KFormInput type="password"  :value="model.password" error=''></KFormInput>
+          <!-- <KFormInput type="password" :value="model.password" @onInput="onInput"></KFormInput> -->
+          <KFormInput type="password" :value="model.password"></KFormInput>
         </KFormItem>
 
         <KFormItem label="submit">
@@ -46,11 +49,14 @@
         </KFormItem>
       </KForm>
      </div>
+     <form-test></form-test>
+     <!-- <kVModel v-model="lovingVue"></kVModel> -->
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+// import kVModel from './components/kVModel.vue'
+import formTest from './components/formTest.vue'
 import cart from './components/cart.vue';
 import KForm from './components/form/KForm.vue';
 import KFormItem from './components/form/KFormItem.vue';
@@ -60,6 +66,7 @@ export default {
   data(){
     return{
       cartSelect:[],
+      lovingVue:true,
        cartList:[{
                 name:'苹果',
                 price:5,
@@ -87,15 +94,17 @@ export default {
   },
   computed:{
     // 计算总钱数
-        total:function(){
-            let totalTemp=0;
-            for(var i=0;i<this.cartList.length;i++){
-                totalTemp+=(this.cartList[i].price*this.cartList[i].num);
-            }
-            return totalTemp;
+    total:function(){
+        let totalTemp=0;
+        for(var i=0;i<this.cartList.length;i++){
+            totalTemp+=(this.cartList[i].price*this.cartList[i].num);
         }
+        return totalTemp;
+    }
   },
   components: {
+    // kVModel,
+    formTest,
     cart,
     KForm,
     KFormItem,
@@ -119,6 +128,10 @@ export default {
       delCart(e){
           this.cartSelect.splice(e.index, 1);
       },
+      //修改输入框内容
+      // onInput(e){
+      //   this.model[e.objName] = e.objVal;
+      // },
       // 提交表单
       submitForm(form){
            this.$refs.loginForm.$emit('validate');
