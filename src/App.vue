@@ -33,12 +33,12 @@
      <h5>表单</h5>
      <div class="k-form-center">
       <KForm ref="loginForm"  :model="model" :rules="rules">
-        <KFormItem label="用户名" >
-          <KFormInput type="text" :value="model.username"></KFormInput>
+        <KFormItem label="用户名" prop="username">
+          <KFormInput type="text"  :value="model.username" error=''></KFormInput>
         </KFormItem>
 
-        <KFormItem label="密码">
-          <KFormInput type="password" :value="model.password"></KFormInput>
+        <KFormItem label="密码" prop="password">
+          <KFormInput type="password"  :value="model.password" error=''></KFormInput>
         </KFormItem>
 
         <KFormItem label="submit">

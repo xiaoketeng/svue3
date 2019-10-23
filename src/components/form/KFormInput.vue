@@ -1,5 +1,5 @@
 <template>
-    <input :type="type" :value="value" class="input-k"/>
+    <input :type="type" v-model="inputVal" v-on:input="inputFunc" class="input-k"/>
 </template>
 <script>
 export default {
@@ -12,7 +12,19 @@ export default {
             type:String,
             default:''
         }
-    }
+    },
+    data(){
+        return{
+            inputVal:this.value
+        }
+    },
+    inject: ['form'],
+    methods: {
+        inputFunc(e){
+            console.log(this.form);
+            this.$emit('changeInput',{inputVal:this.inputVal});
+        }
+    },
 }
 </script>
 <style>
@@ -28,6 +40,6 @@ export default {
     }
     input[type='button']{
         padding-left: 0px;
-        margin-left: 48px;
+        margin-left: 108px;
     }
 </style>

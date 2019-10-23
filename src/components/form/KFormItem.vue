@@ -3,7 +3,7 @@
         <label class="k-form-label" v-if="(label&&label!='submit')">{{label}} </label>
         <slot></slot>
         <!-- 校验错误信息 -->
-        <p v-if="errorMessage" class="error">{{errorMessage}}</p>
+        <p class="error">{{errorMessage}}</p>
     </div>
 </template>
 <script>
@@ -11,32 +11,43 @@ export default {
     props:{
         label:{
             type:String
+        },
+        error:{
+            type:String
+        },
+        prop:{
+            type:String
         }
     },
     inject: ['form'],
     data(){
         return{
-            errorMessage:'',
+            errorMessage:this.error,
             cenVal:false,
             num:0
         }
     },
     created(){
-        console.log('我已经进入了');
-        var that = this;
-        this.form.$on('validate',this.validate);
+        console.log(this.prop,'我已经进入了');
+        if(this.prop){
+            this.form.$on('validate',this.validate);
+        }
+        
     },
     methods:{
         validate(){
+            var that = this;
             //数据模型
             let dataModel = this.form.model;
             //数据规则
             let rulesModel = this.form.rules;
             for(var objName in rulesModel){
-                if(rulesModel[objName][0].required&&!dataModel.objName){
+                if(objName==that.prop&&rulesModel[objName][0].required){
+                    if(dataModel[objName]){
+                        console.log(9);
+                        return false;
+                    }
                     this.errorMessage = rulesModel[objName][0].message;
-                }else{
-                    this.errorMessage = '';
                 }
             }
         }
@@ -52,7 +63,7 @@ export default {
         font-weight:500;
         margin-right: 20px;
         box-sizing: border-box;
-        width:60px;
+        width:100px;
         max-width: 250px;
         text-align: right;
     }
@@ -68,6 +79,7 @@ export default {
         text-align: left;
     }
     .error{
+        width: 100px;
         color: red;
         display: inline-block;
         vertical-align: top;
