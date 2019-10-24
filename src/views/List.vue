@@ -9,7 +9,7 @@
             <td>总价</td>
             <td>操作</td>
         </thead>
-        <tr v-for="(goods,index) in cartList" :key="index">
+        <tr v-for="(goods,index) in cartList" :key="goods.id">
             <td><input type="checkbox" :value="goods" v-model="cartSelect"></td>
             <td>{{goods.name}}</td>
             <td>{{goods.price}}</td>
@@ -21,6 +21,7 @@
                     <div class="che-input"><span class="num">{{goods.num}}</span>个</div>
                     <div class="che-rt" @click="addNum(index)">+</div>
                 </div>
+                <router-link tag="button" class="detail-btn"  :to="`/detail/${goods.id}`">详情</router-link>
                 <!-- <input type="button" value="加入购物车"> -->
             </td>
         </tr>
@@ -40,29 +41,32 @@ export default {
                         name:'苹果',
                         price:5,
                         total:5,
-                        num:1
+                        num:1,
+                        id:1
                     },{
                         name:'雪梨',
                         price:4,
                         total:4,
-                        num:1
+                        num:1,
+                        id:2
                     },{
                         name:'甘蔗',
                         price:2,
                         total:2,
-                        num:1
+                        num:1,
+                        id:3
                     }],
                 }
     },
       computed:{
-    // 计算总钱数
-    total:function(){
-        let totalTemp=0;
-        for(var i=0;i<this.cartList.length;i++){
-            totalTemp+=(this.cartList[i].price*this.cartList[i].num);
+        // 计算总钱数
+        total:function(){
+            let totalTemp=0;
+            for(var i=0;i<this.cartList.length;i++){
+                totalTemp+=(this.cartList[i].price*this.cartList[i].num);
+            }
+            return totalTemp;
         }
-        return totalTemp;
-    }
   },
     methods:{
      // 添加数量
@@ -84,3 +88,13 @@ export default {
   }
 }
 </script>
+<style>
+    .detail-btn{
+        padding:5px 20px;
+        background:#fff;
+        border:1px solid #000;
+        border-radius: 5px;
+        display: inline-block;
+        vertical-align: top;
+    }
+</style>

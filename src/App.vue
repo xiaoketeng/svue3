@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <router-link to="/">1</router-link>| <router-link to="/about">2</router-link>| <router-link to="/login">3</router-link>
+    <router-link to="/">Home</router-link>| 
+    <router-link to="/about">About</router-link>| 
+    <router-link to="/login" v-if="!$store.state.isLogin">Login</router-link>
+    <span v-else>欢迎回来！</span>
     <router-view/>
    
     <cart :cartSelect="cartSelect" @delCart="delCart"></cart>

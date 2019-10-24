@@ -4,6 +4,9 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import List from '../views/List.vue';
+import Detail from '../views/detail.vue';
+import About from '../views/About.vue';
+import store from '../store/index.js';
 
 Vue.use(VueRouter);
 
@@ -13,7 +16,8 @@ const routes = [
     name: 'home',
     component: Home,
     children:[
-      {path:'',component:List}
+      {path:'',component:List},
+      {path:'/detail/:id',component:Detail,props:true}
     ]
   },
   {
@@ -24,10 +28,16 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    beforeEnter(to,form,next){
+//判断是否登录
+    if(!store.state.islogin){
+      console.log(to.path);
+      next('/login?redirect='+to.path);
+    }else{
+      next();
+    }
+    },
+    component: About
   }
 ]
 
@@ -36,5 +46,14 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
+//每次路由激活之前都会执行回到函数
+// router.beforeEach((to,form,next)=>{
+//   console.log(to.path);
+//     //判断是否登录
+//     if(to.path === '/about'&& !window.islogin){
+//       next('/login?redirect='+to.path);
+//     }else{
+//       next();
+//     }
+// });
 export default router
