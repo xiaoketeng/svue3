@@ -1,35 +1,8 @@
 <template>
   <div id="app">
-    <router-link to="/">1</router-link>| <router-link to="/about">2</router-link>
-    <h5 >商品列表</h5>
-   <table border='0' cellpadding='0' cellspacing='0'>
-        <thead>
-            <td>选择</td>
-            <td>商品名</td>
-            <td>价钱</td>
-            <td>总价</td>
-            <td>操作</td>
-        </thead>
-        <tr v-for="(goods,index) in cartList" :key="index">
-            <td><input type="checkbox" :value="goods" v-model="cartSelect"></td>
-            <td>{{goods.name}}</td>
-            <td>{{goods.price}}</td>
-            <td>{{goods.total}}</td>
-            <td>
-                <!-- <input type="checkbox"/> -->
-                <div class="select-num">
-                    <div class="che-lf" @click="reduceNum(index)">-</div>
-                    <div class="che-input"><span class="num">{{goods.num}}</span>个</div>
-                    <div class="che-rt" @click="addNum(index)">+</div>
-                </div>
-                <!-- <input type="button" value="加入购物车"> -->
-            </td>
-        </tr>
-        <tr>
-            <td colspan="4" style="text-align:right">总价钱</td>
-            <td>￥{{total}}</td>
-        </tr>
-    </table>
+    <router-link to="/">1</router-link>| <router-link to="/about">2</router-link>| <router-link to="/login">3</router-link>
+    <router-view/>
+   
     <cart :cartSelect="cartSelect" @delCart="delCart"></cart>
      <h5>表单</h5>
      <div class="k-form-center">
@@ -92,16 +65,7 @@ export default {
         }
     }
   },
-  computed:{
-    // 计算总钱数
-    total:function(){
-        let totalTemp=0;
-        for(var i=0;i<this.cartList.length;i++){
-            totalTemp+=(this.cartList[i].price*this.cartList[i].num);
-        }
-        return totalTemp;
-    }
-  },
+
   components: {
     // kVModel,
     formTest,
